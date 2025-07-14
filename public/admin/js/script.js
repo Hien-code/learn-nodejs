@@ -1,0 +1,48 @@
+//Button-Status
+//Lấy ra các thuộc tính tự định nghĩa
+const buttonsStatus = document.querySelectorAll("[button-status]");
+
+//Nếu có click
+if (buttonsStatus.length > 0) {
+  //Tạo ra đối tượng URL đại diện cho URL hiện tại của trang web.
+  let url = new URL(window.location.href);
+
+  buttonsStatus.forEach((button) => {
+    button.addEventListener("click", () => {
+      //Lấy giá trị của thuộc tính button-status từ phần tử button
+      const status = button.getAttribute("button-status");
+
+      if (status) {
+        //Thêm hoặc cập nhật tham số status trong URL.
+        url.searchParams.set("status", status);
+      } else {
+        //Xoá tham số status khỏi URL hiện tại.
+        url.searchParams.delete("status");
+      }
+      //Cập nhật lại đường dẫn
+      window.location.href = url.href;
+    });
+  });
+}
+
+//End Button-Status
+
+//Form Search
+const formSearch = document.querySelector("#form-search");
+if (formSearch) {
+  let url = new URL(window.location.href);
+  formSearch.addEventListener("submit", (e) => {
+    //Không cần load lại trang
+    e.preventDefault();
+    const keyword = e.target.elements.keyword.value;
+    if (keyword) {
+      //Thêm hoặc cập nhật tham số status trong URL.
+      url.searchParams.set("keyword", keyword);
+    } else {
+      //Xoá tham số status khỏi URL hiện tại.
+      url.searchParams.delete("keyword");
+    }
+    window.location.href = url.href;
+  });
+}
+//End Form Search
