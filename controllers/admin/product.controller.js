@@ -1,38 +1,10 @@
 //[GET] admin/products
 const Product = require("../../models/product.model");
+const filterStatusHelper = require("../../helpers/filterStatus");
 module.exports.index = async (req, res) => {
-  let filterStatus = [
-    {
-      name: "Tất cả",
-      status: "",
-      class: "",
-    },
-    {
-      name: "Hoạt động",
-      status: "active",
-      class: "",
-    },
-    {
-      name: "Dừng hoạt động",
-      status: "inactive",
-      class: "",
-    },
-  ];
+  const filterStatus = filterStatusHelper(req.query);
 
-  //findIndex : Tìm bản ghi thỏa mãn điều kiện nào đó.
-  //Lặp qua từng item của Mảng filterStatus
-  //Lấy ra bản ghi == bản ghi người dùng truyển lên
-  if (req.query.status) {
-    const index = filterStatus.findIndex(
-      (item) => item.status == req.query.status
-    );
-    //Cập nhật lại bản ghi trong mảng có status = req.query.status(Người ta truyền lên)
-    filterStatus[index].class = "active";
-  } else {
-    const index = filterStatus.findIndex((item) => item.status == "");
-    //Cập nhật lại bản ghi trong mảng có status = req.query.status(Người ta truyền lên)
-    filterStatus[index].class = "active";
-  }
+  console.log(filterStatus);
 
   let find = {
     delete: false,
