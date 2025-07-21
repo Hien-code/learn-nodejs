@@ -6,6 +6,9 @@ const app = express();
 //post
 app.use(methodOverride("_method"));
 
+//body
+app.use(express.urlencoded({ extended: true }));
+
 //Load environment variables
 require("dotenv").config();
 

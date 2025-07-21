@@ -2,7 +2,7 @@ const buttonsChangeStatus = document.querySelectorAll("[button-change-status]");
 if (buttonsChangeStatus.length > 0) {
   const formChangeStatus = document.querySelector("#form-change-status");
   const path = formChangeStatus.getAttribute("data-path");
-  console.log(path);
+
   buttonsChangeStatus.forEach((button) => {
     button.addEventListener("click", () => {
       const statusCurrent = button.getAttribute("data-status");
@@ -10,12 +10,8 @@ if (buttonsChangeStatus.length > 0) {
 
       const statusChange = statusCurrent == "active" ? "inactive" : "active";
 
-      //   console.log(statusCurrent);
-      //   console.log(id);
-      //   console.log(statusChange);
-
       const action = path + `/${statusChange}/${id}?_method=PATCH`;
-      //   console.log(action);
+
       formChangeStatus.action = action;
 
       formChangeStatus.submit();
