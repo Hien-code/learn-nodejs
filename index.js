@@ -1,6 +1,10 @@
 //Initialize and configure Expressv
+var methodOverride = require("method-override");
 const express = require("express");
 const app = express();
+
+//post
+app.use(methodOverride("_method"));
 
 //Load environment variables
 require("dotenv").config();

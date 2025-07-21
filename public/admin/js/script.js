@@ -24,7 +24,6 @@ if (buttonsStatus.length > 0) {
     });
   });
 }
-
 //End Button-Status
 
 //Form Search
@@ -63,5 +62,4 @@ if (buttonsPagination) {
     });
   });
 }
-
 //End Pagination

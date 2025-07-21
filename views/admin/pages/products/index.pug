@@ -43,12 +43,34 @@ block main
               td #{item.price} $
               td
                 if item.status == "active"
-                  span(class="badge badge-success") Active
+                  a(
+                    href="javascript:;"
+                    class="badge badge-success"
+                    data-status=item.status
+                    data-id=item.id
+                    button-change-status
+                    ) Hoạt động
                 else
-                  span(class="badge badge-danger") Inactive
+                  a(
+                    href="javascript:;"
+                    class="badge badge-danger"
+                    data-status=item.status
+                    data-id=item.id
+                    button-change-status
+                    ) Dừng hoạt động
               td
                 .d-flex.justify-content-center
                   button(type="button", class="btn-edit") Edit
                   button(type="button", class="btn-delete") Delete
 
   +pagination(pagination)
+  form(
+    action=""
+    method="post"
+    id="form-change-status"
+    data-path=`${prefixAdmin}/products/change-status`
+    )
+    input(type="hidden", name="page", id="current-page", value=pagination.currentPage)
+
+
+  script(src="/admin/js/product.js")
