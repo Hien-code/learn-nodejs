@@ -1,13 +1,23 @@
 //Initialize and configure Expressv
-var methodOverride = require("method-override");
 const express = require("express");
+const methodOverride = require("method-override");
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+const flash = require("express-flash");
+
 const app = express();
 
-//post
+//Notifications
+app.use(cookieParser("CONGHIENCODE"));
+app.use(session({ cookie: { maxAge: 60000 } }));
+app.use(flash());
+
+//POST
 app.use(methodOverride("_method"));
 
-//body
-app.use(express.urlencoded({ extended: true }));
+//Body
+app.use(bodyParser.urlencoded());
 
 //Load environment variables
 require("dotenv").config();

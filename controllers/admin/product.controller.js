@@ -3,7 +3,6 @@ const Product = require("../../models/product.model");
 const filterStatusHelper = require("../../helpers/filterStatus");
 const searchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
-
 module.exports.index = async (req, res) => {
   const filterStatus = filterStatusHelper(req.query);
 
@@ -11,13 +10,12 @@ module.exports.index = async (req, res) => {
     delete: false,
   };
 
-  //filerStatus
   if (req.query.status) {
     find.status = req.query.status;
   }
 
-  //search
-  const objectSearch = searchHelper(req.query);
+  let objectSearch = searchHelper(req.query);
+
   if (objectSearch.regex) {
     find.title = objectSearch.regex;
   }
@@ -25,15 +23,15 @@ module.exports.index = async (req, res) => {
   //pagination
   const countProducts = await Product.countDocuments(find);
 
-  const objectPagination = paginationHelper(
+  let objectPagination = paginationHelper(
     {
-      limitItem: 4,
       currentPage: 1,
+      limitItem: 4,
     },
     req.query,
     countProducts
   );
-
+  //end pagination
   const products = await Product.find(find)
     .limit(objectPagination.limitItem)
     .skip(objectPagination.skip)
@@ -48,17 +46,20 @@ module.exports.index = async (req, res) => {
   });
 };
 
-//[PATCH] admin/products/change-status/:status/:id
+//[PATCH] admin/products/change-status/:status/:id"
 module.exports.changeStatus = async (req, res) => {
   const status = req.params.status;
   const id = req.params.id;
 
   await Product.updateOne({ _id: id }, { status: status });
 
-  res.redirect("/admin/products");
+  req.flash("success", "Cập nhật trạng thái thành công!");
+
+  // res.redirect("/admin/products");
+  res.redirect(req.get("referer")); // Giữ nguyên URL gốc
 };
 
-//[PATCH] admin/products/change-multi
+//[PATCH] admin/products/change-multi"
 module.exports.changeMulti = async (req, res) => {
   const type = req.body.type;
   const ids = req.body.ids.split(", ");
@@ -66,12 +67,19 @@ module.exports.changeMulti = async (req, res) => {
   switch (type) {
     case "active":
       await Product.updateMany({ _id: { $in: ids } }, { status: "active" });
-      break;
+      req.flash(
+        "success",
+        `Cập nhật trạng thái của ${ids.length} sản phẩm thành công!`
+      );
 
+      break;
     case "inactive":
       await Product.updateMany({ _id: { $in: ids } }, { status: "inactive" });
+      req.flash(
+        "success",
+        `Cập nhật trạng thái của ${ids.length} sản phẩm thành công!`
+      );
       break;
-
     case "delete-all":
       await Product.updateMany(
         { _id: { $in: ids } },
@@ -80,6 +88,7 @@ module.exports.changeMulti = async (req, res) => {
           deleteAt: new Date(),
         }
       );
+      req.flash("success", `Đã xóa ${ids.length} sản phẩm thành công!`);
       break;
 
     case "change-position":
@@ -88,8 +97,11 @@ module.exports.changeMulti = async (req, res) => {
         position = parseInt(position);
         await Product.updateOne({ _id: id }, { position: position });
       }
+      req.flash(
+        "success",
+        `Đã đổi vị trí của ${ids.length} sản phẩm thành công!`
+      );
       break;
-
     default:
       break;
   }
@@ -107,6 +119,7 @@ module.exports.deleteItem = async (req, res) => {
       deleteAt: new Date(),
     }
   );
+  req.flash("success", `Đã xóa sản phẩm thành công!`);
 
   res.redirect(req.get("referer")); // Giữ nguyên URL gốc
 };
