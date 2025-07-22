@@ -36,7 +36,9 @@ module.exports.index = async (req, res) => {
 
   const products = await Product.find(find)
     .limit(objectPagination.limitItem)
-    .skip(objectPagination.skip);
+    .skip(objectPagination.skip)
+    .sort({ position: -1 });
+
   res.render("admin/pages/products/index", {
     pageTitle: "Trang product",
     product: products,
@@ -70,15 +72,41 @@ module.exports.changeMulti = async (req, res) => {
       await Product.updateMany({ _id: { $in: ids } }, { status: "inactive" });
       break;
 
+    case "delete-all":
+      await Product.updateMany(
+        { _id: { $in: ids } },
+        {
+          delete: true,
+          deleteAt: new Date(),
+        }
+      );
+      break;
+
+    case "change-position":
+      for (const item of ids) {
+        let [id, position] = item.split("-");
+        position = parseInt(position);
+        await Product.updateOne({ _id: id }, { position: position });
+      }
+      break;
+
     default:
       break;
   }
   res.redirect(req.get("referer")); // Giữ nguyên URL gốc
 };
 
-//[PATCH] admin/products/delete/:id
+//[DELETE] admin/products/delete/:id"
 module.exports.deleteItem = async (req, res) => {
   const id = req.params.id;
-  await Product.updateOne({ _id: id }, { delete: true });
+  // await Product.deleteOne({ _id: id });
+  await Product.updateOne(
+    { _id: id },
+    {
+      delete: true,
+      deleteAt: new Date(),
+    }
+  );
+
   res.redirect(req.get("referer")); // Giữ nguyên URL gốc
 };
