@@ -75,17 +75,29 @@ block main
                     ) Dừng hoạt động
               td
                 .d-flex.justify-content-center
-                  button(type="button", class="btn-edit") Edit
-                  button(type="button", class="btn-delete") Delete
+                  button(type="button", class="btn-edit") Sửa
+                  button(
+                    type="button"
+                    class="btn-delete"
+                    button-delete
+                    data-id=item.id
+                  ) Xóa
 
   +pagination(pagination)
+
   form(
     action=""
     method="post"
     id="form-change-status"
     data-path=`${prefixAdmin}/products/change-status`
     )
-    input(type="hidden", name="page", id="current-page", value=pagination.currentPage)
+
+  form(
+  action=""
+  method="post"
+  id="form-delete-item"
+  data-path=`${prefixAdmin}/products/delete`
+  )
 
 
   script(src="/admin/js/product.js")

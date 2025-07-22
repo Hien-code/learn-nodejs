@@ -46,7 +46,7 @@ module.exports.index = async (req, res) => {
   });
 };
 
-//[PATCH] admin/products/change-status/:status/:id"
+//[PATCH] admin/products/change-status/:status/:id
 module.exports.changeStatus = async (req, res) => {
   const status = req.params.status;
   const id = req.params.id;
@@ -56,9 +56,8 @@ module.exports.changeStatus = async (req, res) => {
   res.redirect("/admin/products");
 };
 
-//[PATCH] admin/products/change-multi"
+//[PATCH] admin/products/change-multi
 module.exports.changeMulti = async (req, res) => {
-  console.log(req.body);
   const type = req.body.type;
   const ids = req.body.ids.split(", ");
 
@@ -74,5 +73,12 @@ module.exports.changeMulti = async (req, res) => {
     default:
       break;
   }
-  res.redirect("/admin/products");
+  res.redirect(req.get("referer")); // Giữ nguyên URL gốc
+};
+
+//[PATCH] admin/products/delete/:id
+module.exports.deleteItem = async (req, res) => {
+  const id = req.params.id;
+  await Product.updateOne({ _id: id }, { delete: true });
+  res.redirect(req.get("referer")); // Giữ nguyên URL gốc
 };
