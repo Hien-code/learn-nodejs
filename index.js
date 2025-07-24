@@ -17,7 +17,7 @@ app.use(flash());
 app.use(methodOverride("_method"));
 
 //Body
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //Load environment variables
 require("dotenv").config();
