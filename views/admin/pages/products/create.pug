@@ -1,6 +1,11 @@
 extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
 
 block main
+    +alert-success(5000)
+    +alert-error(5000)
+
     h1 Trang tạo mới sản phẩm
 
     form(
@@ -63,7 +68,10 @@ block main
             min="0"
         )
 
-        div(class="form-group")
+        div(
+            class="form-group"
+            upload-image
+        )
             label(for="thumbnail") Ảnh
             input(
             type="file"
@@ -71,7 +79,13 @@ block main
             id="thumbnail"
             name="thumbnail"
             accept= "image/*"
+            upload-image-input
         )
+            img(
+                src=""
+                upload-image-preview
+                class="image-preview"
+            )
 
         div(class="form-group")
             label(for="position") Vị trí

@@ -3,6 +3,7 @@ const Product = require("../../models/product.model");
 const filterStatusHelper = require("../../helpers/filterStatus");
 const searchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
+const systemConfig = require("../../config/system");
 module.exports.index = async (req, res) => {
   const filterStatus = filterStatusHelper(req.query);
 
@@ -133,9 +134,6 @@ module.exports.create = (req, res) => {
 
 //[POST] admin/products/create
 module.exports.createPost = async (req, res) => {
-  console.log(req.body);
-  console.log(req.file);
-
   req.body.price = parseFloat(req.body.price);
   req.body.discountPercentage = parseFloat(req.body.discountPercentage);
   req.body.stock = parseInt(req.body.stock);
@@ -147,7 +145,9 @@ module.exports.createPost = async (req, res) => {
     req.body.position = parseInt(req.body.position);
   }
 
-  req.body.thumbnail = `/uploads/${req.file.filename}`;
+  if (req.file) {
+    req.body.thumbnail = `/uploads/${req.file.filename}`;
+  }
 
   //Tạo 1 product mới từ form
   const product = new Product(req.body);
@@ -155,5 +155,5 @@ module.exports.createPost = async (req, res) => {
   //Lưu product mới vào form
   await product.save();
 
-  res.redirect("/admin/products");
+  res.redirect(`${systemConfig.prefixAdmin}/products`);
 };

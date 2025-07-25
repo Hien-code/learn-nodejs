@@ -7,9 +7,11 @@ include ../../mixins/alert.pug
 
 
 block main
-  h1 Trang sản phẩm
+  +alert-success(5000)
+  +alert-error(5000)
 
-  +alert(5000)
+
+  h1 Trang sản phẩm
 
   .card.mb-3
     .card-header Bộ lọc và Tìm kiếm
