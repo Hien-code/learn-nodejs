@@ -6,11 +6,11 @@ block main
     +alert-success(5000)
     +alert-error(5000)
 
-    h1 Trang tạo mới sản phẩm
+    h1 Trang sửa sản phẩm
 
     form(
-        action=`${prefixAdmin}/products/create`
-        id="form-create-product"
+        action=`${prefixAdmin}/products/edit/${product.id}?_method=PATCH`
+        id="form-edit-product"
         method="POST"
         enctype="multipart/form-data"
     )
@@ -22,6 +22,7 @@ block main
                 id="title"
                 name="title"
                 required
+                value=product.title
             )
 
         div(class="form-group")
@@ -31,7 +32,8 @@ block main
                 id="desc"
                 name="description"
                 rows="5"
-            )
+                value=product.description
+            ) #{product.description}
 
         div(class="form-group")
             label(for="price") Giá
@@ -40,7 +42,7 @@ block main
                 class="form-control"
                 id="price"
                 name="price"
-                value="0"
+                value=product.price
                 min="0"
                 step="0.01"
             )
@@ -52,28 +54,28 @@ block main
                 class="form-control"
                 id="discount"
                 name="discountPercentage"
-                value="0"
+                value=product.discountPercentage
                 min="0"
                 step="0.01"
             )
 
         div(class="form-group")
             label(for="stock") Số lượng
-            input(
-                type="number"
-                class="form-control"
-                id="stock"
-                name="stock"
-                value="0"
-                min="0"
-            )
+                input(
+                    type="number"
+                    class="form-control"
+                    id="stock"
+                    name="stock"
+                    value=product.stock
+                    min="0"
+                )
 
         div(
             class="form-group"
             upload-image
         )
             label(for="thumbnail") Ảnh
-            input(
+                input(
                 type="file"
                 class="form-control-file"
                 id="thumbnail"
@@ -82,20 +84,20 @@ block main
                 upload-image-input
             )
                 img(
-                    src=""
+                    src=product.thumbnail
                     upload-image-preview
                     class="image-preview"
                 )
 
         div(class="form-group")
             label(for="position") Vị trí
-            input(
-                type="number"
-                class="form-control"
-                id="position"
-                name="position"
-                placeholder="Tự động tăng"
-                min="1"
+                input(
+                    type="number"
+                    class="form-control"
+                    id="position"
+                    name="position"
+                    min="1"
+                    value=product.position
             )
 
         div(class="form-group form-check form-check-inline")
@@ -105,8 +107,8 @@ block main
                 id="statusActive"
                 name="status"
                 value="active"
-                checked
-            )
+                checked=(product.status == "active" ? true : false)
+        )
             label(for="statusActive" class="form-check-label") Hoạt động
 
         div(class="form-group form-check form-check-inline")
@@ -116,6 +118,7 @@ block main
                 id="statusInactive"
                 name="status"
                 value="inactive"
+                checked=(product.status == "inactive" ? true : false)
             )
             label(for="statusInactive" class="form-check-label") Dừng hoạt động
 
@@ -123,7 +126,7 @@ block main
             button(
                 type="submit"
                 class="btn btn-success"
-            ) Tạo mới
+            ) Cập nhật
 
     script(src="/admin/js/product.js")
 

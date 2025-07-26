@@ -94,7 +94,11 @@ block main
                     ) Dừng hoạt động
               td
                 .d-flex.justify-content-center
-                  button(type="button", class="btn-edit") Sửa
+                  a(
+                    href=`${prefixAdmin}/products/edit/${item.id}`
+                    type="button"
+                    class="btn-edit"
+                  ) Sửa
                   button(
                     type="button"
                     class="btn-delete"

@@ -1,3 +1,7 @@
+a:hover {
+    text-decoration: none;
+    color: #000;
+}
 /* Header & Layout */
 .header {
     background: #202020;
