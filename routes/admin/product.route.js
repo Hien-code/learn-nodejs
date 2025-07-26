@@ -27,5 +27,8 @@ router.patch(
   validate.createPost,
   controller.editPatch
 );
+router.get("/trash", controller.trash);
+router.delete("/delete-hard/:id", controller.deleteHard);
+router.patch("/restore/:id", controller.restore);
 
 module.exports = router;

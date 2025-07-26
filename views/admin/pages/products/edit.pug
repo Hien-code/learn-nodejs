@@ -61,21 +61,21 @@ block main
 
         div(class="form-group")
             label(for="stock") Số lượng
-                input(
-                    type="number"
-                    class="form-control"
-                    id="stock"
-                    name="stock"
-                    value=product.stock
-                    min="0"
-                )
+            input(
+                type="number"
+                class="form-control"
+                id="stock"
+                name="stock"
+                value=product.stock
+                min="0"
+            )
 
         div(
             class="form-group"
             upload-image
         )
             label(for="thumbnail") Ảnh
-                input(
+            input(
                 type="file"
                 class="form-control-file"
                 id="thumbnail"
@@ -83,21 +83,21 @@ block main
                 accept= "image/*"
                 upload-image-input
             )
-                img(
-                    src=product.thumbnail
-                    upload-image-preview
-                    class="image-preview"
-                )
+            img(
+                src=product.thumbnail
+                upload-image-preview
+                class="image-preview"
+            )
 
         div(class="form-group")
             label(for="position") Vị trí
-                input(
-                    type="number"
-                    class="form-control"
-                    id="position"
-                    name="position"
-                    min="1"
-                    value=product.position
+            input(
+                type="number"
+                class="form-control"
+                id="position"
+                name="position"
+                min="1"
+                value=product.position
             )
 
         div(class="form-group form-check form-check-inline")
@@ -108,7 +108,7 @@ block main
                 name="status"
                 value="active"
                 checked=(product.status == "active" ? true : false)
-        )
+            )
             label(for="statusActive" class="form-check-label") Hoạt động
 
         div(class="form-group form-check form-check-inline")

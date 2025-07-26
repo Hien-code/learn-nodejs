@@ -4,6 +4,7 @@ const filterStatusHelper = require("../../helpers/filterStatus");
 const searchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
 const systemConfig = require("../../config/system");
+
 module.exports.index = async (req, res) => {
   const filterStatus = filterStatusHelper(req.query);
 
@@ -188,5 +189,30 @@ module.exports.editPatch = async (req, res) => {
     req.flash("error", `Cập nhật sản phẩm thất bại!`);
   }
 
+  res.redirect(`${systemConfig.prefixAdmin}/products`);
+};
+
+//[GET] admin/products/trash
+module.exports.trash = async (req, res) => {
+  const product = await Product.find({ delete: true });
+  res.render("admin/pages/products/trash", {
+    pageTitle: "Trang xóa vĩnh viễn sản phẩm",
+    product: product,
+  });
+};
+
+//[DELETE] admin/products/delete/hard/:id
+module.exports.deleteHard = async (req, res) => {
+  const id = req.params.id;
+  await Product.deleteOne({ _id: id });
+  req.flash("success", `Đã xóa sản phẩm thành công!`);
+  res.redirect(req.get("referer")); // Giữ nguyên URL gốc
+};
+
+//[PATCH] admin/products/restore/:id
+module.exports.restore = async (req, res) => {
+  const id = req.params.id;
+  await Product.updateOne({ _id: id }, { delete: false, deleteAt: new Date() });
+  req.flash("success", `Đã khôi phục sản phẩm thành công!`);
   res.redirect(`${systemConfig.prefixAdmin}/products`);
 };
