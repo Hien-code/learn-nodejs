@@ -36,11 +36,11 @@ const route = require("./routes/client/index.route");
 const routeAdmin = require("./routes/admin/index.route");
 
 //Configure the view engine
-app.set("views", "./views");
+app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
 
 // Serve static assets
-app.use(express.static("public"));
+app.use(express.static(`${__dirname}/public`));
 
 //Initialize client routes
 route(app);
