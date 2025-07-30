@@ -222,7 +222,7 @@ module.exports.restore = async (req, res) => {
   res.redirect(`${systemConfig.prefixAdmin}/products`);
 };
 
-//[GET] admin/products/edit/:id
+//[GET] admin/products/detail/:id
 module.exports.detail = async (req, res) => {
   try {
     const find = {
@@ -231,7 +231,7 @@ module.exports.detail = async (req, res) => {
     };
     const product = await Product.findOne(find);
     res.render("admin/pages/products/detail.pug", {
-      pageTitle: "Trang chi tiết sản phẩm",
+      pageTitle: product.title,
       product: product,
     });
   } catch (error) {
